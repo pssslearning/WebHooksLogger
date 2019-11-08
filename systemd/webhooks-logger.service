@@ -6,9 +6,9 @@ After=syslog.target network.target
 Type=simple
 User=ubuntu
 Group=ubuntu
-WorkingDirectory=/home/ubuntu/webhook-logger
+WorkingDirectory=/home/ubuntu/webhooks-logger
 
-ExecStart=/bin/sh webhooks-logger
+ExecStart=/home/ubuntu/webhooks-logger/webhooks-logger
 ExecStop=/bin/kill -SIGTERM $MAINPID
 
 [Install]
