@@ -18,6 +18,12 @@ ubuntu@ip-172-xx-yy-zz:~/webhooks-logger$ pwd
 /home/ubuntu/webhooks-logger
 ```
 
+> **NOTA**
+> 	// By default it serves on :8080 unless a  
+>	// PORT environment variable was defined.  
+>	router.Run()  
+>	// router.Run(":3000") for a hard coded port  
+
 > **NOTA: se dá por hecho que vía SFTP se sube el binario `webhooks-logger` a la carpeta `/home/ubuntu/webhooks-logger` 
 
 ```sh
@@ -32,6 +38,7 @@ Type=simple
 User=ubuntu
 Group=ubuntu
 WorkingDirectory=/home/ubuntu/webhooks-logger
+Environment="PORT=8030"
 
 ExecStart=/home/ubuntu/webhooks-logger/webhooks-logger
 ExecStop=/bin/kill -SIGTERM $MAINPID
@@ -43,7 +50,7 @@ WantedBy=multi-user.target
 
 ## Prueba
 ```sh
-curl --verbose -H"Accept: application/json" -H"x-custom: custom-data"   --data-ascii "Hola Mundo" -X POST "http://ec2-aa-bb-ccc-ddd.eu-west-3.compute.amazonaws.com:8080/test/webhook/pay-in?data=1234567890&data2=Hola%20Mundo&flag=true"
+curl --verbose -H"Accept: application/json" -H"x-custom: custom-data"   --data-ascii "Hola Mundo" -X POST "http://ec2-aa-bb-ccc-ddd.eu-west-3.compute.amazonaws.com:8030/test/webhook/pay-in?data=1234567890&data2=Hola%20Mundo&flag=true"
 
 
 
