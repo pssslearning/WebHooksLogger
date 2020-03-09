@@ -18,11 +18,11 @@ ubuntu@ip-172-xx-yy-zz:~/webhooks-logger$ pwd
 /home/ubuntu/webhooks-logger
 ```
 
-> **NOTA**
-> 	// By default it serves on :8080 unless a  
->	// PORT environment variable was defined.  
->	router.Run()  
->	// router.Run(":3000") for a hard coded port  
+> **NOTA**  
+>   // By default it serves on :8080 unless a  
+>	  // PORT environment variable was defined.  
+>	  router.Run()  
+>	  // router.Run(":3000") for a hard coded port  
 
 > **NOTA: se dá por hecho que vía SFTP se sube el binario `webhooks-logger` a la carpeta `/home/ubuntu/webhooks-logger` 
 
