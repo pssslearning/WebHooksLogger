@@ -11,5 +11,5 @@ func initializeRoutes() {
 	router.POST("/", showRootPOST)
 
 	// Handle the PAY-IN Webhook route
-	router.POST("/test/webhook/pay-in", showPayINWebhookPOST)
+	router.POST("/webhook/event", showWebhookEventPOST)
 }

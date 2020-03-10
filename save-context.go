@@ -89,7 +89,7 @@ func saveContextToFile(c *gin.Context) error {
 		return err
 	}
 
-	_, err = w.WriteString("\n---- BODY    (end) -------------------")
+	_, err = w.WriteString("\n---- BODY    (end) -------------------\n")
 	if err != nil {
 		return err
 	}

@@ -50,29 +50,63 @@ WantedBy=multi-user.target
 
 ## Prueba
 ```sh
-curl --verbose -H"Accept: application/json" -H"x-custom: custom-data"   --data-ascii "Hola Mundo" -X POST "http://ec2-aa-bb-ccc-ddd.eu-west-3.compute.amazonaws.com:8030/test/webhook/pay-in?data=1234567890&data2=Hola%20Mundo&flag=true"
+devel1@vbxdeb10mate:~$ cd $GOPATH/src/github.com/pssslearning/WebHooksLogger/
+devel1@vbxdeb10mate:~/gowkspc/src/github.com/pssslearning/WebHooksLogger$ export PORT=8030
+devel1@vbxdeb10mate:~/gowkspc/src/github.com/pssslearning/WebHooksLogger$ ./webhooks-logger &
+[1] 3728
+devel1@vbxdeb10mate:~/gowkspc/src/github.com/pssslearning/WebHooksLogger$ sudo lsof -iTCP -sTCP:LISTEN -P -n | grep 8030
+webhooks- 3728    devel1    6u  IPv6  35392      0t0  TCP *:8030 (LISTEN)
+
+curl --verbose -H"Accept: application/json" -H"x-custom: custom-data" --data-ascii '{\"mensaje\":\"Hola Mundo\"}' -X POST "http://localhost:8030/webhook/event?type=pay-in&data=1234567890&data2=Hola%20Mundo&flag=true"
 
 
+* Connected to localhost (::1) port 8030 (#0)
+> POST /webhook/event?type=pay-in&data=1234567890&data2=Hola%20Mundo&flag=true HTTP/1.1
+> Host: localhost:8030
+> User-Agent: curl/7.64.0
+> Accept: application/json
+> x-custom: custom-data
+> Content-Length: 28
+> Content-Type: application/x-www-form-urlencoded
+> 
+* upload completely sent off: 28 out of 28 bytes
+< HTTP/1.1 200 OK
+< Content-Type: application/json; charset=utf-8
+< Date: Tue, 10 Mar 2020 07:27:10 GMT
+< Content-Length: 18
+< 
+{"response":"OK"}
+* Connection #0 to host localhost left intact
 
-ubuntu@ip-172-xx-yy-zz:~/webhooks-logger/log$ cat GIN-2019-11-08T18-47-01Z-request.log
+
+devel1@vbxdeb10mate:~/gowkspc/src/github.com/pssslearning/WebHooksLogger$ ls -la log/
+total 16
+drwxr-xr-x 2 devel1 devel1 4096 mar 10 08:30 .
+drwxr-xr-x 5 devel1 devel1 4096 mar 10 08:30 ..
+-rw-r--r-- 1 devel1 devel1  532 mar 10 08:27 2020-03-10T08-27-10-01-00-POST-1649ddaf-0128-49ae-8bc3-cdabb2c2ab59.txt
+-rw-r--r-- 1 devel1 devel1    0 mar 10 08:23 GIN-2020-03-10T08-23-25-01-00-error.log
+-rw-r--r-- 1 devel1 devel1  771 mar 10 08:27 GIN-2020-03-10T08-23-25-01-00-request.log
+devel1@vbxdeb10mate:~/gowkspc/src/github.com/pssslearning/WebHooksLogger$
+
+devel1@vbxdeb10mate:~/gowkspc/src/github.com/pssslearning/WebHooksLogger$ cat log/GIN-2020-03-10T08-23-25-01-00-request.log
 [GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
 
 [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
- - using env:   export GIN_MODE=release
- - using code:  gin.SetMode(gin.ReleaseMode)
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
 
 [GIN-debug] GET    /                         --> main.showRootGET (3 handlers)
 [GIN-debug] POST   /                         --> main.showRootPOST (3 handlers)
-[GIN-debug] POST   /test/webhook/pay-in      --> main.showPayINWebhookPOST (3 handlers)
-[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
-[GIN-debug] Listening and serving HTTP on :8080
-[GIN] 2019/11/08 - 18:52:11 | 200 |     242.393µs |   195.nn.nn.nn | POST     /test/webhook/pay-in?data=1234567890&data2=Hola%20Mundo&flag=true
-ubuntu@ip-172-xx-yy-zz:~/webhooks-logger/log$ ls 2019-11-08T18-52-11Z-POST-b1d9b7a9-acbf-4e8f-8b6f-152e64578d8f.txt
-2019-11-08T18-52-11Z-POST-b1d9b7a9-acbf-4e8f-8b6f-152e64578d8f.txt
-ubuntu@ip-172-xx-yy-zz:~/webhooks-logger/log$ cat 2019-11-08T18-52-11Z-POST-b1d9b7a9-acbf-4e8f-8b6f-152e64578d8f.txt
+[GIN-debug] POST   /webhook/event            --> main.showWebhookEventPOST (3 handlers)
+[GIN-debug] Environment variable PORT="8030"
+[GIN-debug] Listening and serving HTTP on :8030
+[GIN] 2020/03/10 - 08:27:10 | 200 |     273.518µs |             ::1 | POST     /webhook/event?type=pay-in&data=1234567890&data2=Hola%20Mundo&flag=true
+
+devel1@vbxdeb10mate:~/gowkspc/src/github.com/pssslearning/WebHooksLogger$ cat log/2020-03-10T08-27-10-01-00-POST-1649ddaf-0128-49ae-8bc3-cdabb2c2ab59.txt 
 
 ---- URL & Query Params (begin) ------
-/test/webhook/pay-in?data=1234567890&data2=Hola%20Mundo&flag=true
+/webhook/event?type=pay-in&data=1234567890&data2=Hola%20Mundo&flag=true
+type: pay-in
 data: 1234567890
 data2: Hola Mundo
 flag: true
@@ -81,10 +115,11 @@ flag: true
 User-Agent: curl/7.64.0
 Accept: application/json
 X-Custom: custom-data
-Content-Length: 10
+Content-Length: 28
 Content-Type: application/x-www-form-urlencoded
 ---- HEADERS (end) -------------------
 ---- BODY    (begin) -----------------
-Hola Mundo
+{\"mensaje\":\"Hola Mundo\"}
 ---- BODY    (end) -------------------
+
 ```
