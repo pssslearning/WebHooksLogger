@@ -57,7 +57,7 @@ devel1@vbxdeb10mate:~/gowkspc/src/github.com/pssslearning/WebHooksLogger$ ./webh
 devel1@vbxdeb10mate:~/gowkspc/src/github.com/pssslearning/WebHooksLogger$ sudo lsof -iTCP -sTCP:LISTEN -P -n | grep 8030
 webhooks- 3728    devel1    6u  IPv6  35392      0t0  TCP *:8030 (LISTEN)
 
-curl --verbose -H"Accept: application/json" -H"x-custom: custom-data" --data-ascii '{\"mensaje\":\"Hola Mundo\"}' -X POST "http://localhost:8030/webhook/event?type=pay-in&data=1234567890&data2=Hola%20Mundo&flag=true"
+curl --verbose -H"Accept: application/json" -H"x-custom: custom-data" --data-ascii '{"mensaje":"Hola Mundo"}' --request POST "http://localhost:8030/webhook/event?type=pay-in&data=1234567890&data2=Hola%20Mundo&flag=true"
 
 
 * Connected to localhost (::1) port 8030 (#0)
