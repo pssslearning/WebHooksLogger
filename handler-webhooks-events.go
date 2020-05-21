@@ -14,6 +14,7 @@ func showWebhookEventPOST(c *gin.Context) {
 	if err != nil {
 		fmt.Println("Error en showWebhookEventPOST: ", err)
 		c.JSON(http.StatusBadRequest, gin.H{"response": "ERROR"})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"response": "OK"})
 	}
-	c.JSON(http.StatusOK, gin.H{"response": "OK"})
 }

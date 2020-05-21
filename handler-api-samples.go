@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func showRootGET(c *gin.Context) {
+func showApiSamplesGET(c *gin.Context) {
 	err := saveContextToFile(c)
 	if err != nil {
 		fmt.Println("Error en showRootGET: ", err)
@@ -19,7 +19,7 @@ func showRootGET(c *gin.Context) {
 	}
 }
 
-func showRootPOST(c *gin.Context) {
+func showApiSamplesPOST(c *gin.Context) {
 	err := saveContextToFile(c)
 	if err != nil {
 		fmt.Println("Error en showRootPOST: ", err)
